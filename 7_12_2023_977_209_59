@@ -1,0 +1,91 @@
+# Leetcode 977. Squares of a Sorted Array
+
+First way:
+```
+#include <algorithm>
+
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        for(int i=0; i<nums.size(); i++){
+            int square = nums[i] * nums[i];
+            nums[i] = square; 
+        }
+        sort(nums.begin(), nums.end());
+        return nums;
+    }
+};
+```
+Second way:
+```
+class Solution {
+public:
+    vector<int> sortedSquares(vector<int>& nums) {
+        int k = nums.size() - 1;
+        vector<int> result(nums.size(), 0);
+        for(int i = 0, j = nums.size() - 1; i <= j;){
+            if(nums[i] * nums[i] < nums[j] * nums[j]){
+                result[k--] = nums[j] * nums[j];
+                j--;
+            }
+            else{
+                result[k--] = nums[i] * nums[i];
+                i++;
+            }
+        }
+        return result;
+    }
+};
+```
+# Leetcode 209. Minimum Size Subarray Sum
+
+sliding window approach
+```
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int result = INT32_MAX;
+        int sum = 0; //sum of the elements in the current window.
+        int i = 0; //starting point
+        int subLength = 0;
+        for(int j =0; j < nums.size(); j++){
+            sum += nums[j];
+            while(sum >= target){
+                subLength = (j - i + 1);
+                result = result < subLength ? result : subLength;
+                sum -= nums[i++];
+            }
+        }
+        return result == INT32_MAX ? 0 : result;
+
+    }
+};
+```
+
+#Leetcode 59. Spiral Matrix II
+
+```
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        int dx[] = {0, 1, 0, -1}, dy[] = {1, 0, -1, 0};
+        int m = n;
+        vector<vector<int>>res(n,vector<int>(n));
+        for (int x = 0, y = 0, d = 0, k = 1; k <= n * m; k ++ )
+        {
+            res[x][y] = k;
+            int a = x + dx[d], b = y + dy[d];
+            if (a < 0 || a >= n || b < 0 || b >= m || res[a][b])
+            {
+                d = (d + 1) % 4;
+                a = x + dx[d], b = y + dy[d];
+            }
+            x = a, y = b;
+        }
+
+        return res;
+    }
+};
+```
+
+
